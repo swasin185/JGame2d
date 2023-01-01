@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="tom.game">
+	<property name="classpath.compile" value=". ${basedir}/lib/game.jar ${basedir}/lib/jmf.jar" />
+	<property name="classpath.jar" value=". lib/game.jar lib/jmf.jar" />
+
+	<target name="clean">
+		<delete dir="bin/tom" />
+		<delete dir="bin/doc" />
+		<delete dir="dist" />
+		<delete file="lib/game.jar" />
+		<delete file="bin/ball.jar" />
+		<delete file="bin/worm.jar" />
+		<delete file="bin/cat.jar" />
+	</target>
+
+	<target name="compile-game">
+		<javac srcdir="src" destdir="bin" includes="tom/game/*.java" classpath="${classpath.compile}" encoding="UTF-8" />
+	</target>
+
+	<target name="compile-gamedemo">
+		<javac srcdir="src" destdir="bin" includes="tom/gamedemo/**/*.java" encoding="UTF-8" />
+		<copy todir="bin">
+			<fileset dir="src">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="jar-game">
+		<jar destfile="lib/game.jar" basedir="bin" includes="tom/game/**" />
+	</target>
+
+	<target name="jar-demo-ball">
+		<jar destfile="bin/ball.jar" basedir="bin" includes="tom/gamedemo/ball/**">
+			<manifest>
+				<attribute name="Main-Class" value="tom.gamedemo.ball.BallController" />
+				<attribute name="Class-Path" value="${classpath.jar}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="jar-demo-cat">
+		<jar destfile="bin/cat.jar" basedir="bin" includes="tom/gamedemo/cat/**">
+			<manifest>
+				<attribute name="Main-Class" value="tom.gamedemo.cat.CatController" />
+				<attribute name="Class-Path" value="${classpath.jar}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="jar-demo-worm">
+		<jar destfile="bin/worm.jar" basedir="bin" includes="tom/gamedemo/worm/**">
+			<manifest>
+				<attribute name="Main-Class" value="tom.gamedemo.worm.WormController" />
+				<attribute name="Class-Path" value="${classpath.jar}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="doc">
+		<javadoc classpath="${classpath.compile}" charset="UTF-8" destdir="bin/doc">
+			<fileset dir="src">
+				<include name="**/*.java" />
+			</fileset>
+		</javadoc>
+	</target>
+
+	<target name="run-ball">
+		<java jar="bin/ball.jar" fork="true" />
+	</target>
+
+	<target name="run-worm">
+		<java jar="bin/worm.jar" fork="true" />
+	</target>
+
+	<target name="run-cat">
+		<java jar="bin/cat.jar" fork="true" />
+	</target>
+
+	<target name="zip">
+		<mkdir dir="dist" />
+		<zip destfile="dist/tomgames.zip">
+			<zipfileset dir="bin" includes="*.jar doc/**" prefix="tomgames" />
+			<zipfileset dir="." includes="lib/*.jar" prefix="tomgames" />
+		</zip>
+	</target>
+
+</project>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
